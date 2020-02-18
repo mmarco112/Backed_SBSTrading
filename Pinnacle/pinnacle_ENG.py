@@ -24,6 +24,7 @@ from pymongo import MongoClient
 import itertools
 import re
 from utils import *
+from configuration import *
 
 
 
@@ -36,16 +37,11 @@ def Pinnacle_ENG():
     options.add_argument("--disable-extensions")
     options.add_argument("--log-level=3")
     options.add_argument("--disable-notifications");
-
-    driver = webdriver.Chrome(executable_path= r"C:\Users\marco\Desktop\chromedriver.exe", options=options)
-
-
-
+    driver = webdriver.Chrome(executable_path= Path_ChromeDriver, options=options)
     driver.get('https://www.pinnacle.com/en/soccer/italy-serie-a/matchups')
     time.sleep(15)
     html = driver.page_source
     soup = BeautifulSoup(html)
-
     Text = []
     SquadraCasa = []
     SqadraTrasferta = []
@@ -68,10 +64,7 @@ def Pinnacle_ENG():
             for v2 in partita.find_all('a', {'data-test-designation': 'away'}):
                 V2.append(v2.text)
 
-    # print(SquadraCasa)
-    # print(SqadraTrasferta)
     Partita=[]
-
     for a, b  in zip(SquadraCasa, SqadraTrasferta):
         squadracasa = a 
         squadratrasferta = b
@@ -79,14 +72,10 @@ def Pinnacle_ENG():
         Partita.append(partita)
 
     Partita[:] = [x for x in Partita if "Home" not in x]
-
-
-    client = MongoClient("mongodb://marco:Arkaton11!@cluster0-shard-00-00-7vwyj.mongodb.net:27017,cluster0-shard-00-01-7vwyj.mongodb.net:27017,cluster0-shard-00-02-7vwyj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
-
+    client = MongoClient(connectionString)
     my_database = client.Pinnacle
     Collection = my_database.Vincente
     Collection.remove()
-
     for a, b, c, d  in zip(Partita, V1, Draw, V2):
         Pinnacle_vincente = { 
         "Partita": a,
@@ -95,4 +84,4 @@ def Pinnacle_ENG():
         '2' : d,
         'Update' : now(),
         }
-        Collection.insert(Pinnacle_vincente);
+        Collection.insert(Pinnacle_vincente)

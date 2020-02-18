@@ -32,7 +32,6 @@ betfair_vincente_ENG()
 betfair_vincente_IT()
 Pinnacle_ENG()
 Diretta_stat()
-
 Diretta_calendario()
 
 

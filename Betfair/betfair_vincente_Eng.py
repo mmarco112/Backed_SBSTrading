@@ -21,11 +21,10 @@ import time
 from pymongo import MongoClient
 import itertools
 from utils import *
+from configuration import *
 
 
-
-def betfair_vincente_ENG():
-        
+def betfair_vincente_ENG():      
     options = webdriver.ChromeOptions() 
     options.add_argument("--headless")
     options.add_argument("--incognito")
@@ -33,11 +32,7 @@ def betfair_vincente_ENG():
     options.add_argument("--disable-extensions")
     options.add_argument("--log-level=3")
     options.add_argument("--disable-notifications");
-
-    driver = webdriver.Chrome(executable_path= r"C:\Users\marco\Desktop\chromedriver.exe", options=options)
-
-
-
+    driver = webdriver.Chrome(executable_path= Path_ChromeDriver, options=options)
     driver.get('https://www.betfair.com/sport/football')
     time.sleep(5)
     html = driver.page_source
@@ -77,13 +72,7 @@ def betfair_vincente_ENG():
             X.append(_X_)
             V2.append(_2_)
 
-    # print(StartingIn)
-    # print(Partita)
-    # print(V1)
-    # print(X)
-    # print(V2)
-
-    client = MongoClient("mongodb://marco:Arkaton11!@cluster0-shard-00-00-7vwyj.mongodb.net:27017,cluster0-shard-00-01-7vwyj.mongodb.net:27017,cluster0-shard-00-02-7vwyj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+    client = MongoClient(connectionString)
 
     my_database = client.Betfair_ENG
     Collection = my_database.Vincente
@@ -111,4 +100,3 @@ def betfair_vincente_ENG():
         }
         Collection.insert(BetfairIT_vincente);
 
-betfair_vincente_ENG()

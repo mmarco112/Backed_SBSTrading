@@ -22,6 +22,7 @@ from pymongo import MongoClient
 import itertools
 import re
 from utils import *
+from configuration import *
 
 
 def Diretta_calendario():
@@ -33,7 +34,7 @@ def Diretta_calendario():
     options.add_argument("--log-level=3")
     options.add_argument("--disable-notifications");
 
-    driver = webdriver.Chrome(executable_path= r"C:\Users\marco\Desktop\chromedriver.exe", options=options)
+    driver = webdriver.Chrome(executable_path= Path_ChromeDriver, options=options)
 
     driver.get('https://www.diretta.it/serie-a/calendario/')
     time.sleep(5)
@@ -67,7 +68,7 @@ def Diretta_calendario():
 
             
       
-    client = MongoClient("mongodb://marco:Arkaton11!@cluster0-shard-00-00-7vwyj.mongodb.net:27017,cluster0-shard-00-01-7vwyj.mongodb.net:27017,cluster0-shard-00-02-7vwyj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority")
+    client = MongoClient(connectionString)
 
     my_database = client.Diretta
     Collection = my_database.Calendario_SerieA
